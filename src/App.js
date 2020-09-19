@@ -5,7 +5,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      display: "",
+      display: "1234567890000000000000",
+      smallDisplay: "12345678900000000000001234567890000000000000",
+      maxLength: 22,
     };
   }
 
@@ -13,6 +15,7 @@ class App extends React.Component {
     return (
       <div id="calculator">
         <div id="display-container">
+          <div id="smallDisplay">{this.state.smallDisplay}</div>
           <div id="display">{this.state.display}</div>
         </div>
         <div id="key-container">

@@ -48,12 +48,28 @@ img {
   background: rgb(92, 92, 92);
   border: 10px solid rgb(145, 145, 145);
   border-radius: 5px;
+  max-width: 320px;
+  /* transform: scale(1.2); */
 }
 
 #display {
-  height: 100px;
   width: 100%;
-  background: red;
+  background: #333333;
+  font-family: "Rationale", sans-serif;
+  color: rgb(30, 255, 0);
+  font-size: 30px;
+  padding: 10px;
+  text-align: right;
+}
+
+#smallDisplay {
+  background: #333333;
+  font-family: "Rationale", sans-serif;
+  padding: 10px;
+  font-size: 20px;
+  word-wrap: break-word;
+  text-align: right;
+  color: #ff9933;
 }
 
 .key {
