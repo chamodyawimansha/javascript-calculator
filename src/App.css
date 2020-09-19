@@ -1,2 +1,96 @@
 /* font-family: 'Press Start 2P', cursive;  for display*/
 /* font-family: 'Orbitron', sans-serif;  for buttons*/
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #333333;
+  height: 100vh;
+}
+
+#calculator {
+  background: rgb(92, 92, 92);
+  border: 10px solid rgb(145, 145, 145);
+  border-radius: 5px;
+}
+
+#display {
+  height: 100px;
+  width: 100%;
+  background: red;
+}
+
+.key {
+  width: 75px;
+  height: 80px;
+  cursor: pointer;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.5em;
+}
+
+.key:hover {
+  border: 3px solid #3333339c;
+}
+
+.key:active {
+  border: none;
+  transform: scale(0.95);
+}
+
+#operation-keys-top {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+#number-keys {
+  width: 225px;
+  float: left;
+}
+
+#ac {
+  width: 150px;
+}
+
+#equel {
+  height: 160px;
+}
+
+#zero {
+  width: 150px;
+}
