@@ -5,10 +5,51 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      display: "1234567890000000000000",
-      smallDisplay: "12345678900000000000001234567890000000000000",
-      maxLength: 22,
+      display: "0",
+      smallDisplay: "0",
+      maxLength: 21,
     };
+
+    this.handleDisplayClear = this.handleDisplayClear.bind(this);
+  }
+
+  handleDisplayClear() {
+    this.setState({
+      display: "0",
+      smallDisplay: "0",
+    });
+  }
+
+  clearDisplay() {
+    this.setState({ display: "" });
+  }
+
+  async handleNumberPress(data) {
+    if (this.state.display === "0") {
+      this.clearDisplay();
+    }
+
+    if (this.state.display === "Digit Limit Reached") {
+      return;
+    }
+
+    if (this.state.display.length < this.state.maxLength) {
+      this.setState((state) => ({ display: state.display + "" + data }));
+    } else {
+      let tempDisplay = this.state.display;
+
+      this.setState({ display: "Digit Limit Reached" });
+
+      let promise = new Promise((res, re) => {
+        setTimeout(() => res(tempDisplay), 1000);
+      });
+
+      let result = await promise;
+
+      this.setState({ display: result });
+    }
+
+    return;
   }
 
   render() {
@@ -20,7 +61,7 @@ class App extends React.Component {
         </div>
         <div id="key-container">
           <div id="operation-keys-top">
-            <button id="ac" className="key">
+            <button id="ac" className="key" onClick={this.handleDisplayClear}>
               AC
             </button>
             <button id="division" className="key">
@@ -31,37 +72,81 @@ class App extends React.Component {
             </button>
           </div>
           <div id="number-keys">
-            <button id="seven" className="key">
+            <button
+              id="seven"
+              className="key select-off"
+              onClick={() => this.handleNumberPress(7)}
+            >
               7
             </button>
-            <button id="eight" className="key">
+            <button
+              id="eight"
+              className="key select-off"
+              onClick={() => this.handleNumberPress(8)}
+            >
               8
             </button>
-            <button id="nine" className="key">
+            <button
+              id="nine"
+              className="key select-off"
+              onClick={() => this.handleNumberPress(9)}
+            >
               9
             </button>
-            <button id="four" className="key">
+            <button
+              id="four"
+              className="key select-off"
+              onClick={() => this.handleNumberPress(4)}
+            >
               4
             </button>
-            <button id="five" className="key">
+            <button
+              id="five"
+              className="key select-off"
+              onClick={() => this.handleNumberPress(5)}
+            >
               5
             </button>
-            <button id="six" className="key">
+            <button
+              id="six"
+              className="key select-off"
+              onClick={() => this.handleNumberPress(6)}
+            >
               6
             </button>
-            <button id="one" className="key">
+            <button
+              id="one"
+              className="key select-off"
+              onClick={() => this.handleNumberPress(1)}
+            >
               1
             </button>
-            <button id="two" className="key">
+            <button
+              id="two"
+              className="key select-off"
+              onClick={() => this.handleNumberPress(2)}
+            >
               2
             </button>
-            <button id="three" className="key">
+            <button
+              id="three"
+              className="key select-off"
+              onClick={() => this.handleNumberPress(3)}
+            >
               3
             </button>
-            <button id="zero" className="key">
+            <button
+              id="zero"
+              className="key select-off"
+              onClick={() => this.handleNumberPress(0)}
+            >
               0
             </button>
-            <button id="decimal" className="key">
+            <button
+              id="decimal"
+              className="key select-off"
+              // onClick={() => this.handleNumberPress(".")}
+            >
               .
             </button>
           </div>
