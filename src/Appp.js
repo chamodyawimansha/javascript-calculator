@@ -5,21 +5,123 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      numOne: 0,
-      numTwo: 0,
-      operator: "",
+      display: 0,
+      numbers: [0],
       maxLength: 22,
-      mainDisplay: "0",
-      secondDisplay: "0",
     };
+
+    this.handleDisplayClear = this.handleDisplayClear.bind(this);
+    this.handleNumberPress = this.handleNumberPress.bind(this);
+    this.clearDisplay = this.clearDisplay.bind(this);
+    this.clearNumbers = this.clearNumbers.bind(this);
   }
+
+  handleDisplayClear() {
+    this.setState({
+      display: 0,
+      numbers: [0],
+    });
+  }
+
+  clearDisplay() {
+    this.setState({ display: "" });
+  }
+
+  clearNumbers() {
+    this.setState({ numbers: [] });
+  }
+
+  handleNumberPress(val) {
+    // return error when the digit limit reached
+    if (this.state.display.length > this.state.maxLength) {
+      return;
+    }
+
+    //clear the leading zero
+    if (this.state.display === 0) {
+      this.clearDisplay();
+    }
+
+    if (this.state.numbers[0] === 0) {
+      this.clearNumbers();
+    }
+
+    // update the state with numbers
+    this.setState((state) => ({
+      display: `${state.display}${val}`,
+      numbers: [...state.numbers, val],
+    }));
+  }
+
+  handleOperatorPress(opt) {}
+  // async handleNumberPress(data) {
+  //   if (
+  //     this.state.display === "0" ||
+  //     this.state.display === this.state.operator
+  //   ) {
+  //     this.clearDisplay();
+  //   }
+
+  //   if (this.state.display === "Digit Limit Reached") {
+  //     return;
+  //   }
+
+  //   if (this.state.display.length < this.state.maxLength) {
+  //     this.setState((state) => ({
+  //       display: state.display + "" + data,
+  //       smallDisplay: state.display + "" + data,
+  //     }));
+  //   } else {
+  //     let tempDisplay = this.state.display;
+
+  //     this.setState({ display: "Digit Limit Reached" });
+
+  //     let promise = new Promise((res, re) => {
+  //       setTimeout(() => res(tempDisplay), 1000);
+  //     });
+
+  //     let result = await promise;
+
+  //     this.setState({ display: result });
+  //   }
+
+  //   return;
+  // }
+
+  // handleOperator(opt) {
+  //   this.setState((state) => ({
+  //     display: opt,
+  //     operator: opt,
+  //     numberOne: state.display,
+  //     smallDisplay: this.display,
+  //   }));
+  // }
+
+  // calculate(opt, num1, num2) {
+  //   var answer;
+  //   switch (opt) {
+  //     case "+":
+  //       answer = num1 + num2;
+  //       break;
+  //     case "Orange":
+  //       answer = "I am not a fan of orange.";
+  //       break;
+  //     case "Apple":
+  //       answer = "How you like them apples?";
+  //       break;
+  //     default:
+  //       answer = "I have never heard of that fruit...";
+  //   }
+
+  //   console.log(answer);
+  // }
 
   render() {
     return (
       <div id="calculator">
         <div id="display-container">
-          <div id="smallDisplay">{this.state.secondDisplay}</div>
-          <div id="display">{this.state.mainDisplay}</div>
+          <div id="smallDisplay">{this.state.numbers.map((item) => item)}</div>
+          <div id="display">{this.state.display}</div>
         </div>
         <div id="key-container">
           <div id="operation-keys-top">
