@@ -5,7 +5,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      acceptableOperations: ["+", "-", "*", "/-", "/"],
       numbers: [0],
       display: "0",
     };
@@ -14,6 +13,7 @@ class App extends React.Component {
     this.handleDisplayClear = this.handleDisplayClear.bind(this);
     this.handleOperatorPress = this.handleOperatorPress.bind(this);
     this.handleEquel = this.handleEquel.bind(this);
+    this.handleDecimalPlace = this.handleDecimalPlace.bind(this);
 
     // Helper functions
     this.clearLeadingZero = this.clearLeadingZero.bind(this);
@@ -39,23 +39,34 @@ class App extends React.Component {
   }
 
   handleOperatorPress(opt) {
-    if (this.state.numbers[0] !== 0) {
+    if (this.state.numbers[1] === " = ") {
       this.setState((state) => ({
-        display: `${state.display}${opt}`,
-        numbers: [...state.numbers, opt],
+        display: "",
+        numbers: [state.numbers[2], opt],
       }));
+    } else {
+      if (this.state.numbers[0] !== 0) {
+        this.setState((state) => ({
+          display: `${state.display}${opt}`,
+          numbers: [...state.numbers, opt],
+        }));
+      }
     }
   }
 
   handleEquel() {
+    // if equel contains return nothing
+
     let numbers = this.removePostOpt(this.state.numbers);
 
     let equation = numbers.join("");
+    let answer = this.evil(equation);
 
     this.handleDisplayClear();
 
     this.setState({
-      display: this.evil(equation),
+      display: answer,
+      numbers: [equation, " = ", answer],
     });
   }
 
@@ -69,6 +80,20 @@ class App extends React.Component {
     }
 
     return numbers;
+  }
+
+  handleDecimalPlace() {
+    let numArray = [...this.state.numbers, "."];
+
+    if (
+      !/([0-9])+([.])+([0-9])+([.])/g.test(numArray.join("")) &&
+      !/([.][.])/g.test(numArray.join(""))
+    ) {
+      this.setState((state) => ({
+        display: `${state.display}${"."}`,
+        numbers: numArray,
+      }));
+    }
   }
 
   //Helper function for clear leading zero
@@ -196,7 +221,7 @@ class App extends React.Component {
             <button
               id="decimal"
               className="key select-off"
-              // onClick={() => this.handleNumberPress(".")}
+              onClick={this.handleDecimalPlace}
             >
               .
             </button>
