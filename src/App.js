@@ -5,36 +5,76 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      numOne: 0,
-      numTwo: 0,
-      operator: "",
-      maxLength: 22,
-      mainDisplay: "0",
-      secondDisplay: "0",
+      acceptableOperations: ["+", "-", "*", "/-", "/"],
+      numbers: [0],
+      display: "0",
     };
+
+    this.handleNumberPress = this.handleNumberPress.bind(this);
+    this.handleDisplayClear = this.handleDisplayClear.bind(this);
+
+    // Helper functions
+    this.clearLeadingZero = this.clearLeadingZero.bind(this);
+  }
+
+  handleDisplayClear() {
+    this.setState({
+      display: "0",
+      numbers: [0],
+    });
+  }
+
+  // remove wrong opertors from the array state update
+
+  handleNumberPress(num) {
+    // clear the leading zero
+    this.clearLeadingZero();
+
+    this.setState((state) => ({
+      display: `${state.display}${num}`,
+    }));
+  }
+
+  //Helper function for clear leading zero
+  //from the display and numbers array
+  clearLeadingZero() {
+    if (this.state.numbers[0] === 0) {
+      this.setState({
+        numbers: [],
+      });
+    }
+    if (this.state.display === "0") {
+      this.setState({
+        display: "",
+      });
+    }
   }
 
   render() {
     return (
       <div id="calculator">
         <div id="display-container">
-          <div id="smallDisplay">{this.state.secondDisplay}</div>
-          <div id="display">{this.state.mainDisplay}</div>
+          <div id="smallDisplay">{this.state.numbers.map((num) => num)}</div>
+          <div id="display">{this.state.display}</div>
         </div>
         <div id="key-container">
           <div id="operation-keys-top">
-            <button id="ac" className="key" onClick={this.handleDisplayClear}>
+            <button
+              id="clear"
+              className="key"
+              onClick={this.handleDisplayClear}
+            >
               AC
             </button>
             <button
-              id="division"
+              id="divide"
               className="key"
               onClick={() => this.handleOperatorPress("/")}
             >
               /
             </button>
             <button
-              id="multiple"
+              id="multiply"
               className="key"
               onClick={() => this.handleOperatorPress("*")}
             >
@@ -122,20 +162,20 @@ class App extends React.Component {
           </div>
           <div id="operation-keys-right">
             <button
-              id="subtraction"
+              id="subtract"
               className="key"
               onClick={() => this.handleOperatorPress("-")}
             >
               -
             </button>
             <button
-              id="addition"
+              id="add"
               className="key"
               onClick={() => this.handleOperatorPress("+")}
             >
               +
             </button>
-            <button id="equel" className="key">
+            <button id="equals" className="key">
               =
             </button>
           </div>
