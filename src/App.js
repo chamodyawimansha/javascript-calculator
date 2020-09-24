@@ -12,6 +12,8 @@ class App extends React.Component {
 
     this.handleNumberPress = this.handleNumberPress.bind(this);
     this.handleDisplayClear = this.handleDisplayClear.bind(this);
+    this.handleOperatorPress = this.handleOperatorPress.bind(this);
+    this.handleEquel = this.handleEquel.bind(this);
 
     // Helper functions
     this.clearLeadingZero = this.clearLeadingZero.bind(this);
@@ -32,7 +34,41 @@ class App extends React.Component {
 
     this.setState((state) => ({
       display: `${state.display}${num}`,
+      numbers: [...state.numbers, num],
     }));
+  }
+
+  handleOperatorPress(opt) {
+    if (this.state.numbers[0] !== 0) {
+      this.setState((state) => ({
+        display: `${state.display}${opt}`,
+        numbers: [...state.numbers, opt],
+      }));
+    }
+  }
+
+  handleEquel() {
+    let numbers = this.removePostOpt(this.state.numbers);
+
+    let equation = numbers.join("");
+
+    this.handleDisplayClear();
+
+    this.setState({
+      display: this.evil(equation),
+    });
+  }
+
+  // this functions removes the
+  // operators after the equations array
+  removePostOpt(numbers) {
+    let length = numbers.length - 1;
+
+    if (isNaN(numbers[length])) {
+      numbers.splice(length, length++);
+    }
+
+    return numbers;
   }
 
   //Helper function for clear leading zero
@@ -48,6 +84,11 @@ class App extends React.Component {
         display: "",
       });
     }
+  }
+
+  evil(fn) {
+    // eslint-disable-next-line no-new-func
+    return new Function("return " + fn)();
   }
 
   render() {
@@ -175,7 +216,7 @@ class App extends React.Component {
             >
               +
             </button>
-            <button id="equals" className="key">
+            <button id="equals" className="key" onClick={this.handleEquel}>
               =
             </button>
           </div>
