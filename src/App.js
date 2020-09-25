@@ -39,24 +39,41 @@ class App extends React.Component {
   }
 
   handleOperatorPress(opt) {
+    if (isNaN(this.state.numbers[this.state.numbers.length - 1])) {
+      let nums = this.state.numbers;
+
+      nums[this.state.numbers.length - 1] = opt;
+
+      this.setState((state) => ({
+        display: opt,
+        numbers: [...nums],
+      }));
+
+      return;
+    }
+
     if (this.state.numbers[1] === " = ") {
       this.setState((state) => ({
-        display: "",
+        display: opt,
         numbers: [state.numbers[2], opt],
       }));
     } else {
       if (this.state.numbers[0] !== 0) {
         this.setState((state) => ({
-          display: `${state.display}${opt}`,
+          display: opt,
           numbers: [...state.numbers, opt],
         }));
       }
     }
   }
 
-  handleEquel() {
-    // if equel contains return nothing
+  // if two or more opts enterd run last one 5 + - / 5 will == 5 / 5
+  // this will change if the last number has minus not the minus
 
+  handleEquel() {
+    if (this.state.numbers[1] === " = ") {
+      return;
+    }
     let numbers = this.removePostOpt(this.state.numbers);
 
     let equation = numbers.join("");
@@ -102,6 +119,11 @@ class App extends React.Component {
     if (this.state.numbers[0] === 0) {
       this.setState({
         numbers: [],
+      });
+    }
+    if (isNaN(this.state.display)) {
+      this.setState({
+        display: "",
       });
     }
     if (this.state.display === "0") {
