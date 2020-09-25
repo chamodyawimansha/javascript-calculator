@@ -39,36 +39,61 @@ class App extends React.Component {
   }
 
   handleOperatorPress(opt) {
-    if (isNaN(this.state.numbers[this.state.numbers.length - 1])) {
-      let nums = this.state.numbers;
+    let { numbers } = this.state;
+    let length = numbers.length;
 
-      nums[this.state.numbers.length - 1] = opt;
+    switch (opt) {
+      case "-":
+        if (numbers[length - 1] !== "-") {
+          if (numbers[0] === 0) {
+            this.setState({
+              display: opt,
+              numbers: [opt],
+            });
+          } else {
+            this.setState({
+              display: opt,
+              numbers: [...numbers, opt],
+            });
+          }
+        } else {
+          return;
+        }
+        break;
 
-      this.setState((state) => ({
-        display: opt,
-        numbers: [...nums],
-      }));
-
-      return;
-    }
-
-    if (this.state.numbers[1] === " = ") {
-      this.setState((state) => ({
-        display: opt,
-        numbers: [state.numbers[2], opt],
-      }));
-    } else {
-      if (this.state.numbers[0] !== 0) {
-        this.setState((state) => ({
-          display: opt,
-          numbers: [...state.numbers, opt],
-        }));
-      }
+      default:
+        if (numbers[length - 1] !== opt) {
+          if (!isNaN(numbers[length - 1])) {
+            if (numbers[1] === " = ") {
+              this.setState((state) => ({
+                display: opt,
+                numbers: [numbers[2], opt],
+              }));
+            } else {
+              if (numbers[0] !== 0) {
+                this.setState({
+                  display: opt,
+                  numbers: [...numbers, opt],
+                });
+              }
+            }
+          } else {
+            console.log(opt);
+            if (opt !== "-") {
+              let nums = this.state.numbers;
+              nums[length - 1] = opt;
+              this.setState({
+                display: opt,
+                numbers: [...nums],
+              });
+              return;
+            }
+          }
+        } else {
+          return;
+        }
     }
   }
-
-  // if two or more opts enterd run last one 5 + - / 5 will == 5 / 5
-  // this will change if the last number has minus not the minus
 
   handleEquel() {
     if (this.state.numbers[1] === " = ") {
@@ -76,7 +101,27 @@ class App extends React.Component {
     }
     let numbers = this.removePostOpt(this.state.numbers);
 
-    let equation = numbers.join("");
+    // remove ots close and leave the last
+
+    let newNumbers = [];
+
+    for (let i = 0; i < numbers.length; i++) {
+      if (!isNaN(numbers[i])) {
+        newNumbers.push(numbers[i]);
+      } else {
+        if (isNaN(numbers[i - 1])) {
+          if (numbers[i] === "-") {
+            newNumbers.push(numbers[i]);
+          } else {
+            newNumbers[i - 1] = numbers[i];
+          }
+        } else {
+          newNumbers.push(numbers[i]);
+        }
+      }
+    }
+
+    let equation = newNumbers.join("");
     let answer = this.evil(equation);
 
     this.handleDisplayClear();
@@ -95,7 +140,6 @@ class App extends React.Component {
     if (isNaN(numbers[length])) {
       numbers.splice(length, length++);
     }
-
     return numbers;
   }
 
@@ -274,5 +318,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-// metrix green display, navly blue body, ash buttons
